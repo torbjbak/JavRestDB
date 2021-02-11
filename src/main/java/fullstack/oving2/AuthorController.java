@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
-public class AuthorList {
+public class AuthorController {
     private final ArrayList<Author> authors = new ArrayList<>();
 
     @GetMapping("/hello")
