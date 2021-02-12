@@ -9,6 +9,12 @@ public class Author {
     private Address address;
     private ArrayList<Book> books;
 
+    public Author(String name, Address address) {
+        this.name = name;
+        this.address = address;
+        this.books = new ArrayList<>();
+    }
+
     public int getId() {
         return id;
     }

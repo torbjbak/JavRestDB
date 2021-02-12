@@ -1,6 +1,7 @@
 package fullstack.oving2.service;
 
 import fullstack.oving2.model.Author;
+import fullstack.oving2.model.Book;
 import fullstack.oving2.repo.Repo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +17,11 @@ public class MyService {
     @Autowired
     private Repo repo;
 
-    public Author message() {
-        return repo.saySomething();
+    public Author authorMessage() {
+        return repo.authorDAO();
+    }
+
+    public Book bookMessage() {
+        return repo.bookDAO();
     }
 }
