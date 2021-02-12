@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 @RestController
 public class AuthorController {
     private final ArrayList<Author> authors = new ArrayList<>();
+    private int idCounter = 0;
     Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
     @Autowired
@@ -27,9 +29,23 @@ public class AuthorController {
         return authors;
     }
 
+    @GetMapping("/authors/{search}")
+    public ArrayList<Author> authorSearch(@PathVariable String search) {
+        ArrayList<Author> result = new ArrayList<>();
+        for (Author a : authors) {
+            if (a.getPersName().toLowerCase(Locale.ROOT).contains(search.toLowerCase(Locale.ROOT)) ||
+                    a.getFamName().toLowerCase(Locale.ROOT).contains(search.toLowerCase(Locale.ROOT))) {
+                result.add(a);
+            }
+        }
+        logMessage("Author search for: '"+ search +"'");
+        return result;
+    }
+
     @PostMapping("/authors")
     public Author addAuthor(@RequestBody Author author) {
-        author.setId(authors.size());
+        author.setId(idCounter);
+        idCounter++;
         authors.add(author);
         return author;
     }
@@ -58,14 +74,8 @@ public class AuthorController {
     }
 
     @RequestMapping("/authors/log")
-    public Author logMessage() {
-
-        logger.trace("Trace!");
-        logger.debug("Debug!");
-        logger.info("Info!");
-        logger.warn("Warning!");
-        logger.error("Error!");
-
+    public Author logMessage(String log) {
+        logger.info("Info: "+ log);
         return this.service.authorMessage();
     }
 }

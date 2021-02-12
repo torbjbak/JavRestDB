@@ -5,12 +5,14 @@ import java.util.ArrayList;
 
 public class Author {
     private int id;
-    private String name;
+    private String persName;
+    private String famName;
     private Address address;
     private ArrayList<Book> books;
 
-    public Author(String name, Address address) {
-        this.name = name;
+    public Author(String persName, String famName, Address address) {
+        this.persName = persName;
+        this.famName = famName;
         this.address = address;
         this.books = new ArrayList<>();
     }
@@ -23,12 +25,20 @@ public class Author {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getPersName() {
+        return persName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPersName(String persName) {
+        this.persName = persName;
+    }
+
+    public String getFamName() {
+        return famName;
+    }
+
+    public void setFamName(String famName) {
+        this.famName = famName;
     }
 
     public Address getAddress() {

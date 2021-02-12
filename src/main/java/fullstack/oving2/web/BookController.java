@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 @RestController
 public class BookController {
     private final ArrayList<Book> books = new ArrayList<>();
+    private int idCounter = 0;
     Logger logger = LoggerFactory.getLogger(BookController.class);
 
     @Autowired
@@ -23,9 +25,22 @@ public class BookController {
         return books;
     }
 
+    @GetMapping("/books/{search}")
+    public ArrayList<Book> authorSearch(@PathVariable String search) {
+        ArrayList<Book> result = new ArrayList<>();
+        for (Book b : books) {
+            if (b.getName().toLowerCase(Locale.ROOT).contains(search.toLowerCase(Locale.ROOT))) {
+                result.add(b);
+            }
+        }
+        logMessage("Search for term: '"+ search +"'");
+        return result;
+    }
+
     @PostMapping("/books")
     public Book addBook(@RequestBody Book book) {
-        book.setId(books.size());
+        book.setId(idCounter);
+        idCounter++;
         books.add(book);
         return book;
     }
@@ -54,14 +69,8 @@ public class BookController {
     }
 
     @RequestMapping("/books/log")
-    public Book logMessage() {
-
-        logger.trace("Trace!");
-        logger.debug("Debug!");
-        logger.info("Info!");
-        logger.warn("Warning!");
-        logger.error("Error!");
-
+    public Book logMessage(String log) {
+        logger.info("Info: "+ log);
         return this.service.bookMessage();
     }
 }

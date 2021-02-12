@@ -10,7 +10,7 @@ public class Repo {
 
     public Author authorDAO() {
         // Do fancy database or DAO calls here
-        return new Author("Jens Person", new Address(7070, "Trondheim", "Gatenavn 1"));
+        return new Author("Jens", "Person", new Address(7070, "Trondheim", "Gatenavn 1"));
     }
 
     public Book bookDAO() {
