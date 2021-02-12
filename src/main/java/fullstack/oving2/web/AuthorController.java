@@ -1,5 +1,6 @@
-package fullstack.oving2;
+package fullstack.oving2.web;
 
+import fullstack.oving2.model.Author;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ public class AuthorController {
     private final ArrayList<Author> authors = new ArrayList<>();
 
     @GetMapping("/hello")
-    public String hello(@RequestParam("name") String name) {
+    public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
         return String.format("Hello %s!", name);
     }
 

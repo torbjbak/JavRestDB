@@ -1,8 +1,4 @@
-package fullstack.oving2;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+package fullstack.oving2.model;
 
 import java.util.ArrayList;
 

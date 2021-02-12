@@ -1,4 +1,4 @@
-package fullstack.oving2;
+package fullstack.oving2.model;
 
 public class Book {
     private int id;
