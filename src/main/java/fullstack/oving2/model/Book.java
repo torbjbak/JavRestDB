@@ -1,13 +1,17 @@
 package fullstack.oving2.model;
 
+import java.util.ArrayList;
+
 public class Book {
     private int id;
     private String name;
+    private ArrayList<Author> authors;
     private int year;
 
     public Book(String name, int year) {
         this.name = name;
         this.year = year;
+        this.authors = new ArrayList<>();
     }
 
     public int getId() {
@@ -32,5 +36,17 @@ public class Book {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public ArrayList<Author> getAuthor() {
+        return authors;
+    }
+
+    public void setAuthor(ArrayList<Author> author) {
+        this.authors = author;
+    }
+
+    public void addAuthor(Author author) {
+        this.authors.add(author);
     }
 }

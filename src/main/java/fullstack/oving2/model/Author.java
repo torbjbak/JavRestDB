@@ -56,4 +56,8 @@ public class Author {
     public void setBooks(ArrayList<Book> books) {
         this.books = books;
     }
+
+    public void addBook(Book book) {
+        this.books.add(book);
+    }
 }

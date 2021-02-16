@@ -1,27 +1,125 @@
 package fullstack.oving2.service;
 
 import fullstack.oving2.model.Author;
+import fullstack.oving2.model.AuthorBook;
 import fullstack.oving2.model.Book;
 import fullstack.oving2.repo.Repo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 @Service
 public class MyService {
+    private final ArrayList<Author> authors = new ArrayList<>();
+    private final ArrayList<Book> books = new ArrayList<>();
+    private final ArrayList<AuthorBook> abConns = new ArrayList<>();
+    private int bookIDcount = 0;
+    private int authorIDcount = 0;
 
-    @Value("${name:World}")
-    private String name;
-
-    // DI av repo her
     @Autowired
     private Repo repo;
 
-    public Author authorMessage() {
-        return repo.authorDAO();
+    public ArrayList<Author> getAuthors() {
+        return authors;
     }
 
-    public Book bookMessage() {
-        return repo.bookDAO();
+    public ArrayList<Book> getBooks() {
+        return books;
+    }
+
+    public ArrayList<AuthorBook> getAbConns() {
+        return abConns;
+    }
+
+    public ArrayList<Book> getBooksAuthor(int id) {
+        ArrayList<Book> books;
+        for (AuthorBook ab : abConns) {
+            if (ab.getAuthorID() == id) {
+
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Author> authorSearch(String search) {
+        ArrayList<Author> result = new ArrayList<>();
+        for (Author a : authors) {
+            if (a.getPersName().toLowerCase(Locale.ROOT).contains(search.toLowerCase(Locale.ROOT)) ||
+                    a.getFamName().toLowerCase(Locale.ROOT).contains(search.toLowerCase(Locale.ROOT))) {
+                result.add(a);
+            }
+        }
+        return result;
+    }
+
+    public Author addAuthor(Author author) {
+        author.setId(authorIDcount);
+        authorIDcount++;
+        authors.add(author);
+        return author;
+    }
+
+    public boolean removeAuthor( int id) {
+        boolean removed = false;
+        for(Author a : authors) {
+            if(a.getId() == id) {
+                authors.set(authors.indexOf(a), authors.get(authors.size() - 1));
+                authors.remove(authors.get(authors.size() - 1));
+                removed = true;
+            }
+        }
+        for(AuthorBook ab : abConns) {
+            if(ab.getAuthorID() == id) {
+                abConns.set(abConns.indexOf(ab), abConns.get(abConns.size() - 1));
+                abConns.remove(abConns.get(abConns.size() - 1));
+            }
+        }
+        return removed;
+    }
+
+    public Book getBook(int id) {
+        for (Book b: books) {
+            if (b.getId() == id) {
+                return b;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Book> bookSearch(String search) {
+        ArrayList<Book> result = new ArrayList<>();
+        for (Book b : books) {
+            if (b.getName().toLowerCase(Locale.ROOT).contains(search.toLowerCase(Locale.ROOT))) {
+                result.add(b);
+            }
+        }
+        return result;
+    }
+
+    public Book addBook(@RequestBody Book book) {
+        book.setId(bookIDcount);
+        bookIDcount++;
+        books.add(book);
+        return book;
+    }
+
+    public boolean deleteBook(int id) {
+        for(Book b : books) {
+            if(b.getId() == id) {
+                books.set(books.indexOf(b), books.get(books.size() - 1));
+                books.remove(books.get(books.size() - 1));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public AuthorBook addConnection(int authorID, int bookID) {
+        AuthorBook ab = new AuthorBook(authorID, bookID);
+        abConns.add(ab);
+        return ab;
     }
 }

@@ -1,0 +1,9 @@
+{
+  "persName"  :   "",
+  "famName"   :   "",
+  "address"   :   {
+    "postCode"  :   0,
+    "city"      :   "",
+    "streetAdd" :   ""
+  }
+}
