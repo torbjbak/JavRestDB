@@ -24,4 +24,8 @@ public class AuthorBook {
     public void setBookID(int bookID) {
         this.bookID = bookID;
     }
+
+    public String toString() {
+        return "Author ID: "+ authorID +", Book ID: "+ bookID;
+    }
 }

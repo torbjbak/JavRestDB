@@ -1,13 +1,11 @@
 package fullstack.oving2.web;
 
-import fullstack.oving2.model.Author;
 import fullstack.oving2.model.Book;
 import fullstack.oving2.service.MyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
 
 @RestController
 public class BookController {
@@ -17,27 +15,27 @@ public class BookController {
     private MyService service;
 
     @GetMapping("/books")
-    public ArrayList<Book> getBooks() {
+    public String getBooks() {
         logMessage("Returning all books.");
-        return service.getBooks();
+        return service.getBooks().toString();
     }
 
     @GetMapping("/books/{id}")
-    public ArrayList<Author> getAuthors(@PathVariable String id) {
+    public String getAuthors(@PathVariable String id) {
         logMessage("Lookup for authors of book with ID: "+ id);
-        return service.getAuthorsBook(Integer.parseInt(id));
+        return service.getAuthorsBook(Integer.parseInt(id)).toString();
     }
 
     @GetMapping("/books/search/{search}")
-    public ArrayList<Book> bookSearch(@PathVariable String search) {
+    public String bookSearch(@PathVariable String search) {
         logMessage("Book search for: '"+ search +"'");
-        return service.bookSearch(search);
+        return service.bookSearch(search).toString();
     }
 
     @PostMapping("/books")
-    public Book addBook(@RequestBody Book book) {
+    public String addBook(@RequestBody Book book) {
         logMessage("Adding book: "+ book.getName());
-        return service.addBook(book);
+        return service.addBook(book).toString();
     }
 
     @DeleteMapping("/books/{id}")
