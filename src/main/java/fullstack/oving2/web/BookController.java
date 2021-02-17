@@ -1,5 +1,6 @@
 package fullstack.oving2.web;
 
+import fullstack.oving2.model.Author;
 import fullstack.oving2.model.Book;
 import fullstack.oving2.service.MyService;
 import org.slf4j.Logger;
@@ -22,9 +23,9 @@ public class BookController {
     }
 
     @GetMapping("/books/{id}")
-    public Book getBook(@PathVariable String id) {
-        logMessage("Lookup for book with ID: "+ id);
-        return service.getBook(Integer.parseInt(id));
+    public ArrayList<Author> getAuthors(@PathVariable String id) {
+        logMessage("Lookup for authors of book with ID: "+ id);
+        return service.getAuthorsBook(Integer.parseInt(id));
     }
 
     @GetMapping("/books/search/{search}")

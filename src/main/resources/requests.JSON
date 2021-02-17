@@ -1,3 +1,4 @@
+[
 {
   "persName"  :   "",
   "famName"   :   "",
@@ -6,4 +7,24 @@
     "city"      :   "",
     "streetAdd" :   ""
   }
-}
+},
+{
+  "persName"  :   "Ola",
+  "famName"   :   "Normann",
+  "address"   :   {
+    "postCode"  :   7070,
+    "city"      :   "Trondheim",
+    "streetAdd" :   "Gateveien 12"
+  }
+},
+  {
+    "persName"  :   "Kari",
+    "famName"   :   "Normann",
+    "address"   :   {
+      "postCode"  :   2020,
+      "city"      :   "Oslo",
+      "streetAdd" :   "Veigata 21"
+    }
+  }
+
+]

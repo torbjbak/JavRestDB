@@ -35,13 +35,18 @@ public class MyService {
     }
 
     public ArrayList<Book> getBooksAuthor(int id) {
-        ArrayList<Book> books;
+        ArrayList<Book> ret = new ArrayList<>();
         for (AuthorBook ab : abConns) {
             if (ab.getAuthorID() == id) {
-
+                for (Book b : books) {
+                    if (b.getId() == ab.getBookID()) {
+                        ret.add(b);
+                        break;
+                    }
+                }
             }
         }
-        return null;
+        return ret;
     }
 
     public ArrayList<Author> authorSearch(String search) {
@@ -62,7 +67,7 @@ public class MyService {
         return author;
     }
 
-    public boolean removeAuthor( int id) {
+    public boolean deleteAuthor(int id) {
         boolean removed = false;
         for(Author a : authors) {
             if(a.getId() == id) {
@@ -80,13 +85,19 @@ public class MyService {
         return removed;
     }
 
-    public Book getBook(int id) {
-        for (Book b: books) {
-            if (b.getId() == id) {
-                return b;
+    public ArrayList<Author> getAuthorsBook(int id) {
+        ArrayList<Author> ret = new ArrayList<>();
+        for (AuthorBook ab : abConns) {
+            if (ab.getBookID() == id) {
+                for (Author a : authors) {
+                    if (a.getId() == ab.getAuthorID()) {
+                        ret.add(a);
+                        break;
+                    }
+                }
             }
         }
-        return null;
+        return ret;
     }
 
     public ArrayList<Book> bookSearch(String search) {
@@ -107,14 +118,21 @@ public class MyService {
     }
 
     public boolean deleteBook(int id) {
+        boolean removed = false;
         for(Book b : books) {
             if(b.getId() == id) {
                 books.set(books.indexOf(b), books.get(books.size() - 1));
                 books.remove(books.get(books.size() - 1));
-                return true;
+                removed = true;
             }
         }
-        return false;
+        for(AuthorBook ab : abConns) {
+            if(ab.getBookID() == id) {
+                abConns.set(abConns.indexOf(ab), abConns.get(abConns.size() - 1));
+                abConns.remove(abConns.get(abConns.size() - 1));
+            }
+        }
+        return removed;
     }
 
     public AuthorBook addConnection(int authorID, int bookID) {

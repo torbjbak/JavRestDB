@@ -44,7 +44,7 @@ public class AuthorController {
     @DeleteMapping("/authors/{id}")
     public boolean removeAuthor(@PathVariable int id) {
         logMessage("Attempt to delete author with ID: "+ id);
-        return service.removeAuthor(id);
+        return service.deleteAuthor(id);
     }
 
 
