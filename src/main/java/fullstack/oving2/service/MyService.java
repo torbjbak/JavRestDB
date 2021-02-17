@@ -135,6 +135,17 @@ public class MyService {
         return removed;
     }
 
+    public ArrayList<String> searchAll(String search) {
+        ArrayList<String> result = new ArrayList<>();
+        for (Author a : authorSearch(search)) {
+            result.add(a.toString());
+        }
+        for (Book b : bookSearch(search)) {
+            result.add(b.toString());
+        }
+        return result;
+    }
+
     public AuthorBook addConnection(int authorID, int bookID) {
         AuthorBook ab = new AuthorBook(authorID, bookID);
         abConns.add(ab);

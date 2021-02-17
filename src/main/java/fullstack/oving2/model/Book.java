@@ -33,4 +33,10 @@ public class Book {
     public void setYear(int year) {
         this.year = year;
     }
+
+    public String toString() {
+        return "Book ID: "+ id +
+                "\nName: "+ name +
+                "\nRelease year: "+ year +"\n";
+    }
 }

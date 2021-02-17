@@ -25,6 +25,12 @@ public class ABController {
         return "Welcome to the author & book database!";
     }
 
+    @GetMapping("/search/{search}")
+    public ArrayList<String> searchAll(@PathVariable String search) {
+        logMessage("General search for: '"+ search +"'");
+        return service.searchAll(search);
+    }
+
     @GetMapping("/con")
     public ArrayList<AuthorBook> getABconns() {
         logMessage("Returning all author/book connections.");

@@ -44,4 +44,10 @@ public class Author {
     public void setAddress(Address address) {
         this.address = address;
     }
+
+    public String toString() {
+        return "Author ID: "+ id +
+                "\nName: "+ famName +", "+ persName +
+                "\nAddress: "+ address +"\n";
+    }
 }
