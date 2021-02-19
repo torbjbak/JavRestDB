@@ -55,7 +55,7 @@ public class BookController {
     public CollectionModel<EntityModel<Book>> bookSearch(@PathVariable String search) {
         logMessage("Book search for: '"+ search +"'");
         List<EntityModel<Book>> books = repo.findAll().stream()
-                .filter(b -> b.getTitle().contains(search))
+                .filter(b -> b.getTitle().toLowerCase().contains(search.toLowerCase()))
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
         return CollectionModel.of(books,

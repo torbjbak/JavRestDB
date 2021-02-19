@@ -59,7 +59,8 @@ public class AuthorController {
     public CollectionModel<EntityModel<Author>> authorSearch(@PathVariable String search) {
         logMessage("Author search for: '"+ search +"'");
         List<EntityModel<Author>> authors =  repo.findAll().stream()
-                .filter(a -> a.getPersName().contains(search) || a.getFamName().contains(search))
+                .filter(a -> a.getPersName().toLowerCase().contains(search.toLowerCase())
+                        || a.getFamName().toLowerCase().contains(search.toLowerCase()))
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
         return CollectionModel.of(authors,
@@ -89,12 +90,14 @@ public class AuthorController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAuthor(@PathVariable Long id) {
         logMessage("Attempt to delete author with ID: "+ id);
+
         Author author = repo.findById(id)
                 .orElseThrow(() -> new AuthorNotFoundException(id));
 
         bookRepo.findAll().stream().filter(b -> b.getAuthors().contains(author))
                 .forEach(b -> b.getAuthors().remove(author));
 
+        author.setBooks(null);
         repo.delete(author);
         return ResponseEntity.noContent().build();
     }
