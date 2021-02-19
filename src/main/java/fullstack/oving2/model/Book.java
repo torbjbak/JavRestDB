@@ -1,7 +1,15 @@
 package fullstack.oving2.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.Objects;
+
+@Entity
 public class Book {
-    private int id;
+    @Id @GeneratedValue
+    private Long id;
     private String name;
     private int year;
 
@@ -10,11 +18,13 @@ public class Book {
         this.year = year;
     }
 
-    public int getId() {
+    public Book() {}
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -34,6 +44,24 @@ public class Book {
         this.year = year;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof Book))
+            return false;
+        Book employee = (Book) obj;
+        return Objects.equals(this.id, employee.id) &&
+                Objects.equals(this.name, employee.name) &&
+                Objects.equals(this.year, employee.year);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.name, this.year);
+    }
+
+    @Override
     public String toString() {
         return "Book ID: "+ id +
                 "\nName: "+ name +

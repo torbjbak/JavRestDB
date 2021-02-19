@@ -3,7 +3,6 @@ package fullstack.oving2.service;
 import fullstack.oving2.model.Author;
 import fullstack.oving2.model.AuthorBook;
 import fullstack.oving2.model.Book;
-import fullstack.oving2.repo.Repo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +18,6 @@ public class MyService {
     private int bookIDcount = 0;
     private int authorIDcount = 0;
 
-    @Autowired
-    private Repo repo;
 
     public ArrayList<Author> getAuthors() {
         return authors;
@@ -61,7 +58,7 @@ public class MyService {
     }
 
     public Author addAuthor(Author author) {
-        author.setId(authorIDcount);
+        //author.setId(authorIDcount);
         authorIDcount++;
         authors.add(author);
         return author;
@@ -111,7 +108,7 @@ public class MyService {
     }
 
     public Book addBook(@RequestBody Book book) {
-        book.setId(bookIDcount);
+        //book.setId(bookIDcount);
         bookIDcount++;
         books.add(book);
         return book;

@@ -1,47 +1,56 @@
 package fullstack.oving2.web;
 
 import fullstack.oving2.model.Author;
-import fullstack.oving2.service.MyService;
+import fullstack.oving2.repo.AuthorRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
+@RequestMapping("/authors")
 public class AuthorController {
+    private final AuthorRepo repo;
     Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
-    @Autowired
-    private MyService service;
-
-    @GetMapping("/authors")
-    public String getAuthors() {
-        logMessage("Returning all books.");
-        return service.getAuthors().toString();
+    public AuthorController(AuthorRepo repo) {
+        this.repo = repo;
     }
 
-    @GetMapping("/authors/{id}")
-    public String getBooks(@PathVariable String id) {
-        logMessage("Lookup for books by author with ID: "+ id);
-        return service.getBooksAuthor(Integer.parseInt(id)).toString();
+    @GetMapping
+    public List<Author> all() {
+        logMessage("Returning all authors.");
+        return repo.findAll();
     }
 
-    @GetMapping("/authors/search/{search}")
-    public String authorSearch(@PathVariable String search) {
+    @GetMapping("/{id}")
+    public EntityModel<Author> one(@PathVariable Long id) {
+        logMessage("Lookup for author with ID: "+ id);
+        Author a = repo.findById(id).orElseThrow(
+                () -> new AuthorNotFoundException(id));
+        return
+    }
+
+    @GetMapping("/search/{search}")
+    public List<Author> authorSearch(@PathVariable String search) {
         logMessage("Author search for: '"+ search +"'");
-        return service.authorSearch(search).toString();
+        return repo.findAll().stream().filter(a ->
+                a.getPersName().equals(search) || a.getFamName().equals(search))
+                .collect(Collectors.toList());
     }
 
-    @PostMapping("/authors")
-    public String addAuthor(@RequestBody Author author) {
+    @PostMapping
+    public Author addAuthor(@RequestBody Author author) {
         logMessage("Adding author: "+ author.getFamName() +", "+ author.getPersName());
-        return service.addAuthor(author).toString();
+        return repo.save(author);
     }
 
-    @DeleteMapping("/authors/{id}")
-    public boolean removeAuthor(@PathVariable int id) {
+    @DeleteMapping("/{id}")
+    public void deleteAuthor(@PathVariable Long id) {
         logMessage("Attempt to delete author with ID: "+ id);
-        return service.deleteAuthor(id);
+        repo.deleteById(id);
     }
 
     public void logMessage(String log) {
