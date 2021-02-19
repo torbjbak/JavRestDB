@@ -12,6 +12,9 @@ import java.util.Set;
 
 public class BookSerializer extends StdSerializer<Set<Book>> {
 
+    public BookSerializer() {
+        this(null);
+    }
 
     protected BookSerializer(Class<Set<Book>> t) {
         super(t);

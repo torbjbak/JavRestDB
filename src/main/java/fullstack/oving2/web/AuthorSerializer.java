@@ -12,6 +12,9 @@ import java.util.Set;
 
 public class AuthorSerializer extends StdSerializer<Set<Author>> {
 
+    public AuthorSerializer() {
+        this(null);
+    }
 
     protected AuthorSerializer(Class<Set<Author>> t) {
         super(t);

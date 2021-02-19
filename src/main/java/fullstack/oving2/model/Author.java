@@ -105,7 +105,7 @@ public class Author {
         return "Author ID: "+ id +
                 "\nName: "+ famName +", "+ persName +
                 "\nAddress: "+ address +
-                "\nBooks: "+ books.stream().map(Book::getName).collect(Collectors.toList());
+                "\nBooks: "+ books.stream().map(Book::getTitle).collect(Collectors.toList());
     }
 
     public String getName() {

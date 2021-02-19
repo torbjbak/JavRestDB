@@ -44,11 +44,11 @@ public class Book {
         this.id = id;
     }
 
-    public String getName() {
+    public String getTitle() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setTitle(String name) {
         this.name = name;
     }
 

@@ -1,6 +1,5 @@
 package fullstack.oving2.web;
 
-import fullstack.oving2.model.Author;
 import fullstack.oving2.model.Book;
 import fullstack.oving2.repo.AuthorRepo;
 import fullstack.oving2.repo.BookRepo;
@@ -56,7 +55,7 @@ public class BookController {
     public CollectionModel<EntityModel<Book>> bookSearch(@PathVariable String search) {
         logMessage("Book search for: '"+ search +"'");
         List<EntityModel<Book>> books = repo.findAll().stream()
-                .filter(b -> b.getName().contains(search))
+                .filter(b -> b.getTitle().contains(search))
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
         return CollectionModel.of(books,
@@ -65,7 +64,19 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<?> addBook(@RequestBody Book book) {
-        logMessage("Adding book: "+ book.getName());
+        logMessage("Adding book: "+ book.getTitle());
+
+        Book newBook = new Book(book.getTitle(), book.getYear(),
+                authorRepo.findAll().stream().filter(a1 ->
+                        book.getAuthors().stream().anyMatch(a2 ->
+                                a2.equals(a1))).collect(Collectors.toSet()));
+
+        authorRepo.findAll().stream().filter(a1 ->
+                book.getAuthors().stream().anyMatch(a2 ->
+                        a2.equals(a1))).collect(Collectors.toSet())
+                .forEach(a -> a.getBooks().add(newBook));
+
+
         EntityModel<Book> em = assembler.toModel(repo.save(book));
         return ResponseEntity
                 .created(em.getRequiredLink(IanaLinkRelations.SELF).toUri())
@@ -75,6 +86,14 @@ public class BookController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable Long id) {
         logMessage("Attempt to delete book with ID: "+ id);
+
+        Book b = repo.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
+
+        authorRepo.findAll().stream().filter(a -> a.getBooks().contains(b))
+                .forEach(a -> a.getBooks().remove(b));
+
+        b.setAuthors(null);
         repo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
