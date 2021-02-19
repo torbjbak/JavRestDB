@@ -4,25 +4,38 @@ import fullstack.oving2.model.Author;
 import fullstack.oving2.repo.AuthorRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping("/authors")
 public class AuthorController {
     private final AuthorRepo repo;
+    private final AuthorModelAssembler assembler;
     Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
-    public AuthorController(AuthorRepo repo) {
+    public AuthorController(AuthorRepo repo, AuthorModelAssembler assembler) {
         this.repo = repo;
+        this.assembler = assembler;
     }
 
     @GetMapping
-    public List<Author> all() {
+    public CollectionModel<EntityModel<Author>> all() {
         logMessage("Returning all authors.");
-        return repo.findAll();
+        List<EntityModel<Author>> authors = repo.findAll().stream()
+                .map(assembler::toModel)
+                .collect(Collectors.toList());
+        return CollectionModel.of(authors,
+                linkTo(methodOn(AuthorController.class).all()).withSelfRel());
     }
 
     @GetMapping("/{id}")
@@ -30,27 +43,34 @@ public class AuthorController {
         logMessage("Lookup for author with ID: "+ id);
         Author a = repo.findById(id).orElseThrow(
                 () -> new AuthorNotFoundException(id));
-        return
+        return assembler.toModel(a);
     }
 
     @GetMapping("/search/{search}")
-    public List<Author> authorSearch(@PathVariable String search) {
+    public CollectionModel<EntityModel<Author>> authorSearch(@PathVariable String search) {
         logMessage("Author search for: '"+ search +"'");
-        return repo.findAll().stream().filter(a ->
-                a.getPersName().equals(search) || a.getFamName().equals(search))
+        List<EntityModel<Author>> authors =  repo.findAll().stream()
+                .filter(a -> a.getPersName().contains(search) || a.getFamName().contains(search))
+                .map(assembler::toModel)
                 .collect(Collectors.toList());
+        return CollectionModel.of(authors,
+                linkTo(methodOn(AuthorController.class).all()).withSelfRel());
     }
 
     @PostMapping
-    public Author addAuthor(@RequestBody Author author) {
+    public ResponseEntity<?> addAuthor(@RequestBody Author author) {
         logMessage("Adding author: "+ author.getFamName() +", "+ author.getPersName());
-        return repo.save(author);
+        EntityModel<Author> em = assembler.toModel(repo.save(author));
+        return ResponseEntity
+                .created(em.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(em);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAuthor(@PathVariable Long id) {
+    public ResponseEntity<?> deleteAuthor(@PathVariable Long id) {
         logMessage("Attempt to delete author with ID: "+ id);
         repo.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
     public void logMessage(String log) {

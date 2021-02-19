@@ -1,21 +1,37 @@
 package fullstack.oving2.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import fullstack.oving2.web.AuthorSerializer;
+import fullstack.oving2.web.BookSerializer;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Book {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "native"
+    )
+    @GenericGenerator(
+            name = "native",
+            strategy = "native"
+    )
     private Long id;
     private String name;
     private int year;
+    @ManyToMany(
+            cascade = CascadeType.ALL
+    )
+    private Set<Author> authors;
 
-    public Book(String name, int year) {
-        this.name = name;
+    public Book(String title, int year, Set<Author> authors) {
+        this.name = title;
         this.year = year;
+        this.authors = authors;
     }
 
     public Book() {}
@@ -44,6 +60,15 @@ public class Book {
         this.year = year;
     }
 
+    @JsonSerialize(using = AuthorSerializer.class)
+    public Set<Author> getAuthors() {
+        return this.authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -65,6 +90,7 @@ public class Book {
     public String toString() {
         return "Book ID: "+ id +
                 "\nName: "+ name +
-                "\nRelease year: "+ year +"\n";
+                "\nRelease year: "+ year +
+                "\nAuthor(s): "+ authors.stream().map(Author::getName).collect(Collectors.toList());
     }
 }

@@ -1,13 +1,23 @@
 package fullstack.oving2.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
 public class Address {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(
+            strategy = GenerationType.AUTO,
+            generator = "native"
+    )
+    @GenericGenerator(
+            name = "native",
+            strategy = "native"
+    )
     private Long id;
     private int postCode;
     private String city;
@@ -22,19 +32,19 @@ public class Address {
     public Address() {}
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public int getPostCode() {
-        return postCode;
+        return this.postCode;
     }
 
     public String getCity() {
-        return city;
+        return this.city;
     }
 
     public String getStreetAdd() {
-        return streetAdd;
+        return this.streetAdd;
     }
 
     public void setId(Long id) {
