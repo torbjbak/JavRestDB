@@ -1,7 +1,8 @@
 package fullstack.oving2.repo;
 
-import org.springframework.stereotype.Repository;
+import fullstack.oving2.model.Author;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public class AuthorRepo {
+public interface AuthorRepo extends JpaRepository<Author, Long> {
+
 }

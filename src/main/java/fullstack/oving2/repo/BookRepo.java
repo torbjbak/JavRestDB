@@ -1,7 +1,8 @@
 package fullstack.oving2.repo;
 
-import org.springframework.stereotype.Repository;
+import fullstack.oving2.model.Book;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public class BookRepo {
+public interface BookRepo extends JpaRepository<Book, Long> {
+
 }
