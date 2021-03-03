@@ -3,7 +3,6 @@ package fullstack.oving2;
 import fullstack.oving2.model.Address;
 import fullstack.oving2.model.Author;
 import fullstack.oving2.model.Book;
-import fullstack.oving2.repo.AddressRepo;
 import fullstack.oving2.repo.AuthorRepo;
 import fullstack.oving2.repo.BookRepo;
 import org.slf4j.Logger;
@@ -19,11 +18,11 @@ public class LoadDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
     @Bean
-    CommandLineRunner initDatabase(AuthorRepo authorRepo, BookRepo bookRepo, AddressRepo addressRepo) {
+    CommandLineRunner initDatabase(AuthorRepo authorRepo, BookRepo bookRepo) {
 
         return args -> {
 
-            Address ad1 = new Address(7070, "Trondheim", "Gateveien 12");
+           /* Address ad1 = new Address(7070, "Trondheim", "Gateveien 12");
             Address ad2 = new Address(2020, "Oslo", "Veigata 21");
             Address ad3 = new Address(1001, "Jerusalem", "Righteous Path");
             Address ad4 = new Address(6666, "Seoul", "Demon Street 1");
@@ -59,7 +58,7 @@ public class LoadDatabase {
             log.info("Preloading " + bookRepo.save(b2));
             log.info("Preloading " + bookRepo.save(b3));
             log.info("Preloading " + bookRepo.save(b4));
-            log.info("Preloading " + bookRepo.save(b5));
+            log.info("Preloading " + bookRepo.save(b5));*/
         };
     }
 }

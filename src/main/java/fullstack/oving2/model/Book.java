@@ -2,7 +2,6 @@ package fullstack.oving2.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fullstack.oving2.web.AuthorSerializer;
-import fullstack.oving2.web.BookSerializer;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
