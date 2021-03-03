@@ -103,7 +103,7 @@ public class Author {
     @Override
     public String toString() {
         return "Author ID: "+ id +
-                "\nName: "+ famName +", "+ persName +
+                "\nName: "+ getName() +
                 "\nAddress: "+ address +
                 "\nBooks: "+ books.stream().map(Book::getTitle).collect(Collectors.toList());
     }
