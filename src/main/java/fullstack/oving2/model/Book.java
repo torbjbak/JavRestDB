@@ -20,7 +20,7 @@ public class Book {
             strategy = "native"
     )
     private Long id;
-    private String name;
+    private String title;
     private int year;
     @ManyToMany(
             cascade = CascadeType.ALL
@@ -28,7 +28,7 @@ public class Book {
     private Set<Author> authors;
 
     public Book(String title, int year, Set<Author> authors) {
-        this.name = title;
+        this.title = title;
         this.year = year;
         this.authors = authors;
     }
@@ -44,11 +44,11 @@ public class Book {
     }
 
     public String getTitle() {
-        return name;
+        return title;
     }
 
-    public void setTitle(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getYear() {
@@ -76,19 +76,19 @@ public class Book {
             return false;
         Book employee = (Book) obj;
         return Objects.equals(this.id, employee.id) &&
-                Objects.equals(this.name, employee.name) &&
+                Objects.equals(this.title, employee.title) &&
                 Objects.equals(this.year, employee.year);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.name, this.year);
+        return Objects.hash(this.id, this.title, this.year);
     }
 
     @Override
     public String toString() {
         return "Book ID: "+ id +
-                "\nName: "+ name +
+                "\nTitle: "+ title +
                 "\nRelease year: "+ year +
                 "\nAuthor(s): "+ authors.stream().map(Author::getName).collect(Collectors.toList());
     }

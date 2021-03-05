@@ -3,10 +3,11 @@ package fullstack.oving2;
 import fullstack.oving2.model.Address;
 import fullstack.oving2.model.Author;
 import fullstack.oving2.model.Book;
-import fullstack.oving2.repo.AuthorRepo;
-import fullstack.oving2.repo.BookRepo;
+import fullstack.oving2.service.AuthorService;
+import fullstack.oving2.service.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,13 +17,21 @@ import java.util.Set;
 @Configuration
 public class LoadDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
+    private final AuthorService as;
+    private final BookService bs;
+
+    @Autowired
+    public LoadDatabase(AuthorService as, BookService bs) {
+        this.as = as;
+        this.bs = bs;
+    }
 
     @Bean
-    CommandLineRunner initDatabase(AuthorRepo authorRepo, BookRepo bookRepo) {
+    CommandLineRunner initDatabase() {
 
         return args -> {
 
-           /* Address ad1 = new Address(7070, "Trondheim", "Gateveien 12");
+            Address ad1 = new Address(7070, "Trondheim", "Gateveien 12");
             Address ad2 = new Address(2020, "Oslo", "Veigata 21");
             Address ad3 = new Address(1001, "Jerusalem", "Righteous Path");
             Address ad4 = new Address(6666, "Seoul", "Demon Street 1");
@@ -49,16 +58,16 @@ public class LoadDatabase {
             b4.setAuthors(Set.of(au3));
             b5.setAuthors(Set.of(au4));
 
-            log.info("Preloading " + authorRepo.save(au1));
-            log.info("Preloading " + authorRepo.save(au2));
-            log.info("Preloading " + authorRepo.save(au3));
-            log.info("Preloading " + authorRepo.save(au4));
+            log.info("Preloading " + as.addAuthor(au1));
+            log.info("Preloading " + as.addAuthor(au2));
+            log.info("Preloading " + as.addAuthor(au3));
+            log.info("Preloading " + as.addAuthor(au4));
 
-            log.info("Preloading " + bookRepo.save(b1));
-            log.info("Preloading " + bookRepo.save(b2));
-            log.info("Preloading " + bookRepo.save(b3));
-            log.info("Preloading " + bookRepo.save(b4));
-            log.info("Preloading " + bookRepo.save(b5));*/
+            log.info("Preloading " + bs.addBook(b1));
+            log.info("Preloading " + bs.addBook(b2));
+            log.info("Preloading " + bs.addBook(b3));
+            log.info("Preloading " + bs.addBook(b4));
+            log.info("Preloading " + bs.addBook(b5));
         };
     }
 }

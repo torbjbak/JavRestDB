@@ -38,30 +38,18 @@ public class BookService {
     }
 
     public Book addBook(Book book) {
-        Book newBook = new Book(book.getTitle(), book.getYear(),
-                aRepo.findAll().stream()
-                        .filter(a1 -> book.getAuthors().stream()
-                                .anyMatch(a2 -> a2.equals(a1)))
-                        .collect(Collectors.toSet()));
-
-        aRepo.findAll().stream()
-                .filter(a1 -> book.getAuthors().stream()
-                        .anyMatch(a2 -> a2.equals(a1)))
-                .collect(Collectors.toSet())
-                .forEach(a -> a.getBooks().add(newBook));
-
         return bRepo.save(book);
     }
 
     public void deleteBook(Long id) {
-        Book b = bRepo.findById(id)
-                .orElseThrow(() -> new BookNotFoundException(id));
+        Book b = getBook(id);
 
-        aRepo.findAll().stream().filter(a -> a.getBooks().contains(b))
+        aRepo.findAll().stream()
+                .filter(a -> a.getBooks().contains(b))
                 .forEach(a -> a.getBooks().remove(b));
 
         b.setAuthors(null);
 
-        bRepo.deleteById(id);
+        bRepo.delete(b);
     }
 }

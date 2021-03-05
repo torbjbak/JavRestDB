@@ -44,33 +44,18 @@ public class AuthorService {
     }
 
     public Author addAuthor(Author author) {
-        Author newAuthor = new Author(author.getPersName(), author.getFamName(),
-                addRepo.findAll().stream()
-                        .filter(a -> a.equals(author.getAddress()))
-                        .findFirst().orElse(null),
-                bRepo.findAll().stream()
-                        .filter(b1 -> author.getBooks().stream().anyMatch(b2 -> b2.equals(b1)))
-                        .collect(Collectors.toSet()));
-
-        bRepo.findAll().stream()
-                .filter(b1 -> author.getBooks().stream()
-                        .anyMatch(b2 -> b2.equals(b1)))
-                .collect(Collectors.toSet())
-                .forEach(b -> b.getAuthors().add(newAuthor));
-
-        return aRepo.save(newAuthor);
+        return aRepo.save(author);
     }
 
-    public void deleteAuthor(@PathVariable Long id) {
-        Author author = aRepo.findById(id)
-                .orElseThrow(() -> new AuthorNotFoundException(id));
+    public void deleteAuthor(Long id) {
+        Author a = getAuthor(id);
 
         bRepo.findAll().stream()
-                .filter(b -> b.getAuthors().contains(author))
-                .forEach(b -> b.getAuthors().remove(author));
+                .filter(b -> b.getAuthors().contains(a))
+                .forEach(b -> b.getAuthors().remove(a));
 
-        author.setBooks(null);
+        a.setBooks(null);
 
-        aRepo.delete(author);
+        aRepo.delete(a);
     }
 }

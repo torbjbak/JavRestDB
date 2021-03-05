@@ -28,8 +28,7 @@ public class AuthorServiceTest {
 
     @BeforeEach
     public void setUp() {
-        Author author =
-                new Author("Test", "Testson", null, null);
+        Author author = new Author("Test", "Testson", null, null);
 
         Mockito.lenient().when(repo.findById(1L))
                 .thenReturn(Optional.of(author));
