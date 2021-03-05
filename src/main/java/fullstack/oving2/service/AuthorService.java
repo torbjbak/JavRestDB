@@ -1,13 +1,11 @@
 package fullstack.oving2.service;
 
 import fullstack.oving2.model.Author;
-import fullstack.oving2.repo.AddressRepo;
 import fullstack.oving2.repo.AuthorRepo;
 import fullstack.oving2.repo.BookRepo;
 import fullstack.oving2.web.AuthorNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +15,12 @@ import java.util.stream.Collectors;
 public class AuthorService {
     private final AuthorRepo aRepo;
     private final BookRepo bRepo;
-    private final AddressRepo addRepo;
 
 
     @Autowired
-    public AuthorService(AuthorRepo aRepo, BookRepo bRepo, AddressRepo addRepo) {
+    public AuthorService(AuthorRepo aRepo, BookRepo bRepo) {
         this.aRepo = aRepo;
         this.bRepo = bRepo;
-        this.addRepo = addRepo;
     }
 
     public List<Author> getAuthors() {
